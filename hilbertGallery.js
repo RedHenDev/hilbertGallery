@@ -13,7 +13,7 @@ function setup(){
 }
 
 function newTex(){
-	tex = loadImage("/images/hil" + 
+	tex = loadImage("https://github.com/RedHenDev/hilbertGallery/images/hil" + 
 					 int(random(1,16)) + ".png");
 }
 
