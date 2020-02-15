@@ -38,7 +38,7 @@ function draw(){
 	speedY = map(mouseY, 0, height,
 			   0.01, 12);
 	
-	translate(0,-height/7);
+	translate(0,-height/6);
 	rotateY(speed);
 	rotateX(speedY);
 	texture(tex);
