@@ -12,7 +12,7 @@ function preload(){
 function setup(){
     
    createCanvas(window.innerWidth,
-				window.innerWidth,
+				window.innerHeight,
 			   WEBGL);
 	
 	newTex();
