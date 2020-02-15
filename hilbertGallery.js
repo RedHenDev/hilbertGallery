@@ -39,7 +39,7 @@ function draw(){
 			   0.01, 12);
 	
 	translate(0,-height/6);
-	rotateY(speed);
+	rotateY(speed + frameCount/100);
 	rotateX(speedY);
 	texture(tex);
 	box(height/3.2);	
