@@ -1,6 +1,21 @@
-//new Q5("global");
+// Using the new 'q5xjs' by Lingdong (Sep 2020) -- for a little extra speed.
+/*
+https://github.com/LingDong-/q5xjs
+*/
 
-let autoMove = true;
+// Move mouse to scroll infinite
+// procedural flatland, generated
+// with the famous Marching Squares.
+// Tap to toggle aesthetic.
+
+// Thank you, Uncle Shiffles x.
+// Red Hen (Brian).
+
+new Q5("global");
+
+let PerlinSeed = 1984;
+
+let autoMove = false;
 
 let nodes = [];
 let squares = [];
@@ -12,9 +27,13 @@ let columns = 64;
 
 let linesOn = true;
 
-let g = Math.random()*255;
+let g = Math.random()*100+155;
 
+// Perlin noise offsets.
 let xOff = 0;
+let yOff = 0;
+
+let mouseV = createVector();
 
 function setup(){
     createCanvas(window.innerWidth,
@@ -28,7 +47,7 @@ function setup(){
 }
 
 function paintBackground(){
-	background(0,72,0);
+	background(222,0,222);
 }
 
 function march(){
@@ -47,9 +66,41 @@ function mouseMoved(){
 }
 
 function scrollMarch(){
-  xOff+=1*step;
+  
+  // Check to see what dir
+  // we should move.
+  let mD = createVector(mouseX-mouseV.x, mouseY-mouseV.y);
+  // Has mouse moved more on
+  // x-axis or y-axis?
+	let speed = 1*step;
+  if (Math.abs(mD.x)>
+      Math.abs(mD.y)){
+    // If more on x...
+    let n = 0;
+    if (mD.x < 0) n = -speed;
+    else n = speed;
+    xOff+=n;
+  } else {
+   // So, more on y... 
+    let n = 0;
+    if (mD.y < 0) n = -speed;
+    else n = speed;
+    yOff+=n;
+  }
+  
+  
 	paintBackground();
 	march();
+  
+    mouseV.x = mouseX;
+    mouseV.y = mouseY;
+}
+
+function mousePressed(){
+  // Toggle lines.
+  linesOn = !linesOn;
+  renderSquares();
+  
 }
 
 function draw(){
@@ -112,7 +163,7 @@ function scatterNodes(){
 	// height and width.
 	
 	// For Perlin noise.
-	noiseSeed(1984);
+	noiseSeed(PerlinSeed);
 	
 	for (let i = 0; i < rY; i++){
 		for (let j = 0; j < cX; j++){
@@ -120,7 +171,7 @@ function scatterNodes(){
 			//let onORoff = Math.round(Math.random());
 			// Perlin.
 			let onORoff = Math.round(
-				noise((j*step)+xOff,(i*step)));
+				noise((j*step)+xOff+PerlinSeed,(i*step)+yOff+PerlinSeed));
 			let baby = new Node(j*step,i*step,
 							 onORoff);
 			nodes.push(baby);
@@ -164,8 +215,13 @@ class Square{
 													 this.nodes[2].pos.y);
 		
 		if (!linesOn) {	
-										stroke(0,g,0); 
-									 	fill(0,g,0);}
+	//stroke(0,g,0); 
+	//stroke(2);fill(22);	
+          fill(0,g,0);
+        } else {
+         stroke(22);
+          fill(222);
+        }
 		
 		switch (this.bin){
 			case (1): 
